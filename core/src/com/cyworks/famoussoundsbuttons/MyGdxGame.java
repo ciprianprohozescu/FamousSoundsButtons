@@ -3,6 +3,7 @@ package com.cyworks.famoussoundsbuttons;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -19,7 +20,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 
 public class MyGdxGame extends ApplicationAdapter implements GestureListener {
 	SpriteBatch batch;
-    int app_state, i, nrSounds, nrMaxSounds, nrPage, nrMaxPages; //1 buttons pages
+    int app_state, i, j, nrSounds, nrMaxSounds, nrPage, nrMaxPages; //1 buttons pages
     float screenWidth, screenHeight;
     Texture plaquePic, buttonPic, pressedButtonPic;
     Sprite[] plaque, buttons, pressedButton;
@@ -30,6 +31,7 @@ public class MyGdxGame extends ApplicationAdapter implements GestureListener {
     FreeTypeFontGenerator fontGenerator;
     FreeTypeFontGenerator.FreeTypeFontParameter fontParameter;
     BitmapFont plaqueFont;
+    public static final String TAG = "myMessage";
 	
 	@Override
 	public void create () {
@@ -65,11 +67,11 @@ public class MyGdxGame extends ApplicationAdapter implements GestureListener {
             else
                 x = screenWidth / 2 + 100;
             if (i <= 2)
-                y = 400;
+                y = 1400 + plaque[i].getHeight();
             else if (i <= 4)
                 y = 800 + plaque[i].getHeight();
             else
-                y = 1400 + plaque[i].getHeight();
+                y = 400;
             plaque[i].setPosition(x,  y);
             x += (plaque[i].getWidth() - buttons[i].getWidth()) / 2;
             y -= 300;
@@ -80,9 +82,18 @@ public class MyGdxGame extends ApplicationAdapter implements GestureListener {
         nrSounds = 6;
         nrMaxSounds = 20;
         sounds = new Sound[nrMaxSounds];
-        for (i = 1; i <= nrSounds; i++)
+        sounds[1] = Gdx.audio.newSound(Gdx.files.internal("baDumTsss.mp3"));
+        sounds[2] = Gdx.audio.newSound(Gdx.files.internal("oooh.mp3"));
+        sounds[3] = Gdx.audio.newSound(Gdx.files.internal("silence.mp3"));
+        for (i = 4; i <= nrSounds; i++)
             sounds[i] = Gdx.audio.newSound(Gdx.files.internal("baDumTsss.mp3"));
         buttonTime = new long[nrMaxSounds];
+
+        fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("motionPicture.ttf"));
+        fontParameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        fontParameter.size = 75;
+        fontParameter.color = Color.BLACK;
+        plaqueFont = fontGenerator.generateFont(fontParameter);
 	}
 
 	@Override
@@ -101,10 +112,11 @@ public class MyGdxGame extends ApplicationAdapter implements GestureListener {
                     pressedButton[i].draw(batch);
             }
         }
+        drawPlaqueText(nrPage);
 		batch.end();
         for (i = 1; i <= 6; i++) {
             if (buttonTime[i] > 0) {
-                if (System.currentTimeMillis() - buttonTime[i] > 500)
+                if (System.currentTimeMillis() - buttonTime[i] > 300)
                     buttonTime[i] = 0;
             }
         }
@@ -118,6 +130,7 @@ public class MyGdxGame extends ApplicationAdapter implements GestureListener {
         plaquePic.dispose();
         for (i = 1; i <= nrSounds; i++)
             sounds[i].dispose();
+        plaqueFont.dispose();
     }
 
     @Override
@@ -181,5 +194,16 @@ public class MyGdxGame extends ApplicationAdapter implements GestureListener {
     public void resize(int width, int height) {
         viewport.update(width, height);
         camera.position.set(screenWidth/2,screenHeight/2,0);
+    }
+
+    public void drawPlaqueText(int x) {
+        if (x == 1) {
+            plaqueFont.draw(batch, "Ba Dum Tsss", plaque[1].getX() + 60, plaque[1].getY() + plaque[1].getHeight()- 30);
+            plaqueFont.draw(batch, "Silence", plaque[2].getX() + 60, plaque[2].getY() + plaque[2].getHeight()- 30);
+            plaqueFont.draw(batch, "Oooohhhh", plaque[3].getX() + 60, plaque[3].getY() + plaque[3].getHeight()- 30);
+            plaqueFont.draw(batch, "Black Man\n   Crying", plaque[4].getX() + 60, plaque[4].getY() + plaque[4].getHeight()- 30);
+            plaqueFont.draw(batch, "Applause", plaque[5].getX() + 60, plaque[5].getY() + plaque[5].getHeight()- 30);
+            plaqueFont.draw(batch, "Small Applause", plaque[6].getX() + 60, plaque[6].getY() + plaque[6].getHeight()- 30);
+        }
     }
 }
