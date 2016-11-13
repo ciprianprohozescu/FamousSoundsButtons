@@ -2,7 +2,7 @@ package com.cyworks.famoussoundsbuttons;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,7 +24,7 @@ public class MyGdxGame extends ApplicationAdapter implements GestureListener {
     float screenWidth, screenHeight;
     Texture plaquePic, buttonPic, pressedButtonPic;
     Sprite[] plaque, buttons, pressedButton;
-    Sound sounds[];
+    Music sounds[];
     long buttonTime[];
     OrthographicCamera camera;
     Viewport viewport;
@@ -41,7 +41,7 @@ public class MyGdxGame extends ApplicationAdapter implements GestureListener {
 
         app_state = 1;
         nrPage = 1;
-        nrMaxPages = 1;
+        nrMaxPages = 3;
 
         camera = new OrthographicCamera();
         viewport = new FillViewport(1080, 1920, camera);
@@ -79,14 +79,27 @@ public class MyGdxGame extends ApplicationAdapter implements GestureListener {
             pressedButton[i].setPosition(x, y);
         }
 
-        nrSounds = 6;
+        nrSounds = 18;
         nrMaxSounds = 20;
-        sounds = new Sound[nrMaxSounds];
-        sounds[1] = Gdx.audio.newSound(Gdx.files.internal("baDumTsss.mp3"));
-        sounds[2] = Gdx.audio.newSound(Gdx.files.internal("oooh.mp3"));
-        sounds[3] = Gdx.audio.newSound(Gdx.files.internal("silence.mp3"));
-        for (i = 4; i <= nrSounds; i++)
-            sounds[i] = Gdx.audio.newSound(Gdx.files.internal("baDumTsss.mp3"));
+        sounds = new Music[nrMaxSounds];
+        sounds[1] = Gdx.audio.newMusic(Gdx.files.internal("baDumTsss.mp3"));
+        sounds[2] = Gdx.audio.newMusic(Gdx.files.internal("silence.mp3"));
+        sounds[3] = Gdx.audio.newMusic(Gdx.files.internal("oooh.mp3"));
+        sounds[4] = Gdx.audio.newMusic(Gdx.files.internal("best_cry_ever.mp3"));
+        sounds[5] = Gdx.audio.newMusic(Gdx.files.internal("applause.mp3"));
+        sounds[6] = Gdx.audio.newMusic(Gdx.files.internal("old_ladies_clapping.mp3"));
+        sounds[7] = Gdx.audio.newMusic(Gdx.files.internal("party_whistle.mp3"));
+        sounds[8] = Gdx.audio.newMusic(Gdx.files.internal("party_whistle_beat.mp3"));
+        sounds[9] = Gdx.audio.newMusic(Gdx.files.internal("drum1.mp3"));
+        sounds[10] = Gdx.audio.newMusic(Gdx.files.internal("drum2.mp3"));
+        sounds[11] = Gdx.audio.newMusic(Gdx.files.internal("it_was_at_this_moment.mp3"));
+        sounds[12] = Gdx.audio.newMusic(Gdx.files.internal("surprise_motherfucker.mp3"));
+        sounds[13] = Gdx.audio.newMusic(Gdx.files.internal("no_god_no.mp3"));
+        sounds[14] = Gdx.audio.newMusic(Gdx.files.internal("nope.mp3"));
+        sounds[15] = Gdx.audio.newMusic(Gdx.files.internal("oh_yeah.mp3"));
+        sounds[16] = Gdx.audio.newMusic(Gdx.files.internal("uh_oh.mp3"));
+        sounds[17] = Gdx.audio.newMusic(Gdx.files.internal("laugh1.mp3"));
+        sounds[18] = Gdx.audio.newMusic(Gdx.files.internal("laugh2.mp3"));
         buttonTime = new long[nrMaxSounds];
 
         fontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("motionPicture.ttf"));
@@ -135,7 +148,19 @@ public class MyGdxGame extends ApplicationAdapter implements GestureListener {
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        return false;
+        if (velocityX < 0) {
+            if (nrPage < nrMaxPages)
+                nrPage++;
+            else
+                nrPage = 1;
+        }
+        else if (velocityX > 0) {
+            if (nrPage > 1)
+                nrPage--;
+            else
+                nrPage = nrMaxPages;
+        }
+        return true;
     }
 
     @Override
@@ -198,12 +223,28 @@ public class MyGdxGame extends ApplicationAdapter implements GestureListener {
 
     public void drawPlaqueText(int x) {
         if (x == 1) {
-            plaqueFont.draw(batch, "Ba Dum Tsss", plaque[1].getX() + 60, plaque[1].getY() + plaque[1].getHeight()- 30);
-            plaqueFont.draw(batch, "Silence", plaque[2].getX() + 60, plaque[2].getY() + plaque[2].getHeight()- 30);
-            plaqueFont.draw(batch, "Oooohhhh", plaque[3].getX() + 60, plaque[3].getY() + plaque[3].getHeight()- 30);
-            plaqueFont.draw(batch, "Black Man\n   Crying", plaque[4].getX() + 60, plaque[4].getY() + plaque[4].getHeight()- 30);
-            plaqueFont.draw(batch, "Applause", plaque[5].getX() + 60, plaque[5].getY() + plaque[5].getHeight()- 30);
-            plaqueFont.draw(batch, "Small Applause", plaque[6].getX() + 60, plaque[6].getY() + plaque[6].getHeight()- 30);
+            plaqueFont.draw(batch, "Ba Dum Tsss", plaque[1].getX() + 60, plaque[1].getY() + plaque[1].getHeight()- 40);
+            plaqueFont.draw(batch, "Silence", plaque[2].getX() + 120, plaque[2].getY() + plaque[2].getHeight()- 40);
+            plaqueFont.draw(batch, "Oooohhhh", plaque[3].getX() + 100, plaque[3].getY() + plaque[3].getHeight()- 40);
+            plaqueFont.draw(batch, "Best Cry\n    Ever", plaque[4].getX() + 120, plaque[4].getY() + plaque[4].getHeight()- 10);
+            plaqueFont.draw(batch, "Applause", plaque[5].getX() + 110, plaque[5].getY() + plaque[5].getHeight()- 40);
+            plaqueFont.draw(batch, "Small Applause", plaque[6].getX() + 60, plaque[6].getY() + plaque[6].getHeight()- 40);
+        }
+        else if (x == 2) {
+            plaqueFont.draw(batch, "Party Whistle", plaque[1].getX() + 60, plaque[1].getY() + plaque[1].getHeight()- 40);
+            plaqueFont.draw(batch, "Party Whistle\n      Beat", plaque[2].getX() + 60, plaque[2].getY() + plaque[2].getHeight()- 10);
+            plaqueFont.draw(batch, "Drum One", plaque[3].getX() + 90, plaque[3].getY() + plaque[3].getHeight()- 40);
+            plaqueFont.draw(batch, "Drum Two", plaque[4].getX() + 90, plaque[4].getY() + plaque[4].getHeight()- 40);
+            plaqueFont.draw(batch, "It Was At\n This Moment", plaque[5].getX() + 60, plaque[5].getY() + plaque[5].getHeight() - 10);
+            plaqueFont.draw(batch, "Surprise\n Motherf**ker", plaque[6].getX() + 60, plaque[6].getY() + plaque[6].getHeight()- 10);
+        }
+        else if (x == 3) {
+            plaqueFont.draw(batch, "No God No", plaque[1].getX() + 60, plaque[1].getY() + plaque[1].getHeight()- 40);
+            plaqueFont.draw(batch, "Nope", plaque[2].getX() + 60, plaque[2].getY() + plaque[2].getHeight()- 10);
+            plaqueFont.draw(batch, "Ooooh Yeah", plaque[3].getX() + 90, plaque[3].getY() + plaque[3].getHeight()- 40);
+            plaqueFont.draw(batch, "Uh Oh", plaque[4].getX() + 90, plaque[4].getY() + plaque[4].getHeight()- 40);
+            plaqueFont.draw(batch, "Laugh One", plaque[5].getX() + 60, plaque[5].getY() + plaque[5].getHeight() - 10);
+            plaqueFont.draw(batch, "Laugh Two", plaque[6].getX() + 60, plaque[6].getY() + plaque[6].getHeight()- 10);
         }
     }
 }
